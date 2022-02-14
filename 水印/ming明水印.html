@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>明水印</title>
+  </head>
+  <style>
+    .btn {
+      width: 100px;
+      height: 100px;
+      background-color: aqua;
+    }
+  </style>
+  <body>
+    <button class="btn" onclick="outPut()">按钮</button>
+    <script>
+      //   实现方式
+      //   创建canvas,并设置canvas的宽高，
+      //   设置getContext为2d.设置canvas上面文字信息的相关配置，
+      //   比如文字大小，基线，颜色，旋转角度，再用filltext填写文字内容。
+      //   将canvas用toDataUrl转换成base64图片。
+      //   新建一个div，设置宽高和绝对定位，
+      //   并设置较高的z-index,设置点击穿透pointer-events:none,
+      //   设置背景图片为刚刚生成的base64图片，并设置背景重复。
+      //   设置body为相对定位，将div插入到body中
+      function outPut() {
+        console.log("无遮挡");
+      }
+      (function () {
+        // canvas 实现 watermark
+        //   const initStyle =
+        {
+          // 使用 ES6 的函数默认值方式设置参数的默认取值
+          // 具体参见 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Default_parameters
+          (container = document.body),
+            (width = "200px"),
+            (height = "150px"),
+            (textAlign = "center"),
+            (textBaseline = "middle"),
+            (font = "20px microsoft yahei"),
+            (fillStyle = "rgba(184, 184, 184, 0.8)"),
+            (content = "请勿外传"),
+            (rotate = "30"),
+            (zIndex = 1000);
+        }
+        function __canvasWM({
+          // 使用 ES6 的函数默认值方式设置参数的默认取值
+          // 具体参见 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Default_parameters
+          container = document.body,
+          width = "200px",
+          height = "150px",
+          textAlign = "center",
+          textBaseline = "middle",
+          font = "20px microsoft yahei",
+          fillStyle = "rgba(184, 184, 184, 0.8)",
+          content = "请勿外传",
+          rotate = "30",
+          zIndex = 1000,
+        } = {}) {
+          var args = arguments[0] || initStyle;
+          var canvas = document.createElement("canvas");
+          canvas.setAttribute("width", width);
+          canvas.setAttribute("height", height);
+          var ctx = canvas.getContext("2d");
+          ctx.textAlign = textAlign;
+          ctx.textBaseline = textBaseline;
+          ctx.font = font;
+          ctx.fillStyle = fillStyle;
+          ctx.rotate((Math.PI / 180) * rotate);
+          ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
+          var base64Url = canvas.toDataURL();
+          const watermarkDiv = document.createElement("div");
+          watermarkDiv.setAttribute(
+            "style",
+            `
+                position:absolute;
+                top:0;
+                left:0;
+                width:100%;
+                height:100vh;
+                z-index:${zIndex};
+                pointer-events:none;
+                background-repeat:repeat;
+                background-image:url('${base64Url}')
+            `
+          );
+          container.style.position = "relative";
+          container.insertBefore(watermarkDiv, container.firstChild);
+        }
+        window.__canvasWM = __canvasWM;
+      })();
+      // 调用
+      __canvasWM({
+        content: "QQMusicFE",
+      });
+    </script>
+  </body>
+</html>

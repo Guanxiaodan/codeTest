@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪类和伪元素</title>
+    <style>
+        body {
+            background-color: pink;
+            margin: 16px;
+        }
+        /* 示例一 */
+        input[type="number"] {
+            font-size: 3em;
+            width: 200px;
+            height: 100px;
+            border-radius: 10px;
+        }
+        input:out-of-range:focus{background-color: rgb(223, 156, 156);}
+        input:out-of-range + h2::after{content:"超出范围"}
+        /* 示例二 */
+        input[type="checkbox"] {
+            font-size: 3em;
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            display: block;
+        }
+        input[type="checkbox"]::after {
+            content: "已勾选";
+            display: none;
+            width: 150px;
+            height: 50px;
+            margin-left: 250px;
+        }
+        input[type="checkbox"]:checked::after{
+            display: block;
+        }
+        /* 示例三  伪类选择器*/
+        li {
+            font-size: 2em;
+        }
+        li:nth-child(2n+1){
+            color: aquamarine;
+        }
+
+        /* 示例四：改变第一个元素颜色 */
+        p:last-child::first-letter{
+            color: #ffeb3b;
+            font-size: 2em;
+        }
+
+
+    </style>
+</head>
+<body>
+    <p>示例一:请输入数字</p>
+    <h1>请输入数字</h1>
+    <input type="number" min="1" max="10">
+    <h2>结果：</h2>
+
+    <p>示例二：请点击</p>
+    <input type="checkbox">
+    <input type="checkbox">
+    <input type="checkbox">
+    
+    <p>示例三：伪类选择器</p>
+    <ul>
+        <li>第一个</li>
+        <li>第二个</li>
+        <li>第三个</li>
+        <li>第四个</li>
+        <li>第五个</li>
+    </ul>
+
+    <p>示例四：改变第一个元素颜色</p>
+    <p>关当当</p>
+</body>
+</html>

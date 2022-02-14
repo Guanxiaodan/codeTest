@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片加密</title>
+</head>
+<body>
+    <h2>使用到的方法:</h2>
+    <ol>
+        <li>ctx.getImageData(0, 0, 300, 300);  获取像素信息</li>
+        <li>ctx.drawImage(img, 0, 0);  将图像绘制到画布上</li>
+        <li>ctx.fillText('广告位招租', 10, 30);  给画布绘制文字信息</li>
+        <li>ctx.putImageData(originalData, 0, 0);  将改好的像素信息重新绘制到画布上</li>
+        
+
+    </div>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script>
+
+        var ctx = document.getElementById('canvas').getContext('2d');
+        var img = new Image();
+        img.crossOrigin = "Anonymous";
+        var originalData;
+        
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            originalData = ctx.getImageData(0, 0, 300, 300);
+        };
+        // img.src = './xiaolan.png';
+        img.src = 'http://biqing.github.io/teamblog/xiaolan.png';
+
+
+
+        var textData;
+        // 这些canvas API，好久没用，需要查API文档了T_T
+        ctx.font = '30px Microsoft Yahei';
+        ctx.fillText('广告位招租', 10, 30);
+        // 获取加密文字的像素信息
+        textData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height).data;
+        // textData这个文字是用透明度来控制的，其他rgb通道都是0，也就是黑色
+        console.log(textData)
+
+        var mergeData = function(newData, color){
+            var oData = originalData.data; // 没被加密的原始图片
+            var bit, offset;  // offset的作用是找到alpha通道值，这里需要大家自己动动脑筋
+        
+            switch(color){
+                case 'R':
+                    bit = 0;
+                    offset = 3;
+                    break;
+                case 'G':
+                    bit = 1;
+                    offset = 2;
+                    break;
+                case 'B':
+                    bit = 2;
+                    offset = 1;
+                    break;
+            }
+        
+            for(var i = 0; i < oData.length; i++){
+                if(i % 4 == bit){ //找到R通道的像素值
+                    // 只处理目标通道，文字像素透明度为0表示没有文字信息，透明度不为0表示有文字信息
+                    if(newData[i + offset] === 0 && (oData[i] % 2 === 1)){ //没有文字信息，将图片R通道值设置成偶数
+                        // 没有信息的像素，该通道最低位置0，但不要越界
+                        if(oData[i] === 255){
+                            oData[i]--;
+                        } else {
+                            oData[i]++;
+                        }
+                    } else if (newData[i + offset] !== 0 && (oData[i] % 2 === 0)){ // 有文字信息，将图片R通道值设置成奇数
+                        // // 有信息的像素，该通道最低位置1，可以想想上面的斑点效果是怎么实现的
+                        if(oData[i] === 255){
+                            oData[i]--;
+                        } else {
+                            oData[i]++;
+                        }
+                    }
+                }
+            }
+            ctx.putImageData(originalData, 0, 0);
+        }
+
+    mergeData(textData, 'R')
+    </script>
+</body>
+</html>

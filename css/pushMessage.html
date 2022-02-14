@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .push {
+        height: 100px;
+        background-color: aquamarine;
+        width: 100%;
+        animation-name: MessageMoveOut;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes MessageMoveOut {
+        0% {
+          padding: 8px;
+          opacity: 1;
+        }
+
+        100% {
+          padding: 0;
+          opacity: 0;
+          background-color: rgb(196, 159, 230);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="btn" onclick="showMessage()">点击显示消息</div>
+    <div class="box"></div>
+    <!-- <div class="push">消息</div> -->
+    <script>
+      const box = document.querySelector('.box')
+      let count = 1
+      function showMessage() {
+        const el = document.createElement('div')
+        el.innerHTML = count++
+        el.classList.add('push')
+        box.appendChild(el)
+        removeEl(el)
+      }
+      function removeEl(el) {
+        setTimeout(() => {
+          el.remove()
+        }, 3000)
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解密</title>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script>
+        var ctx = document.getElementById('canvas').getContext('2d');
+        // 用来获取加密过的像素信息originalData
+        var img = new Image();
+        img.crossOrigin = "Anonymous";
+        var originalData;
+        
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            // 获取指定区域的canvas像素信息
+            originalData = ctx.getImageData(0, 0, 300, 300);
+            // console.log(originalData);
+            processData(originalData)
+        };
+        // img.src = './xiaolan.png';
+        img.src = 'http://biqing.github.io/teamblog/xiaolan.png';
+
+
+
+
+
+        // 反演
+        // 反演的时候，绿色通道和蓝色通道统统都让他是0即rgba(R，0，0，0)，显示的颜色要么是是红色，要么是黑色，所以吧R通道的，是奇数就就让他是红色256即rgba(256,0,0,0)，是偶数就让他是黑色rgba(0,0,0,0)
+        var processData = function(originalData){
+            console.log(originalData.data)
+            var data = originalData.data;
+            for(var i = 0; i < data.length; i++){
+                if(i % 4 == 0){ // R通道
+                    // 红色分量
+                    if(data[i] % 2 == 0){
+                        data[i] = 0;
+                    } else {
+                        data[i] = 255;
+                    }
+                } else if(i % 4 == 3){
+                    // alpha通道不做处理
+                    continue;
+                } else {
+                    // 关闭其他分量，不关闭也不影响答案，甚至更美观 o(^▽^)o
+                    data[i] = 0;
+                }
+            }
+            // 将结果绘制到画布
+            ctx.putImageData(originalData, 0, 0);
+        }
+        console.log(originalData)
+        processData(originalData)
+        
+    </script>
+</body>
+</html>

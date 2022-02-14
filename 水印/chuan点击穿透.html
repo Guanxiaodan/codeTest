@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 200px;
+        height: 200px;
+        background-color: forestgreen;
+      }
+      .son {
+        width: 100px;
+        height: 100px;
+        background-color: aquamarine;
+        pointer-events: none; /*该元素不再响应点击事件，由于事件冒泡，形成了点击穿透的效果*/
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box" onclick="fatherPat()">
+      <div class="son" onclick="sonrPat()"></div>
+    </div>
+    <script>
+      function fatherPat() {
+        console.log("父元素");
+      }
+      function sonrPat() {
+        console.log("子元素");
+      }
+    </script>
+  </body>
+</html>
