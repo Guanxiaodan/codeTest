@@ -1,3 +1,4 @@
+// 只要我还没执行完，你就等着，所有进来的都给拒掉，等我执行完了，再响应第一个进来的
 function coloring(){
     let r = Math.floor(Math.random()*255)
     let g = Math.floor(Math.random()*255)

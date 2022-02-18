@@ -9,95 +9,95 @@
 // promise.resolve()（10）
 // 题目1：
 const promise = new Promise((resolve, reject) => {
-  console.log(1);
-  resolve(6);
-  console.log(2);
-});
+  console.log(1)
+  resolve(6)
+  console.log(2)
+})
 promise.then(() => {
-  console.log(3);
-});
-console.log(4);
+  console.log(3)
+})
+console.log(4)
 // 1 2 4 3
 
 // 题目2：
-Promise.resolve(1).then(2).then(Promise.resolve(3)).then(console.log);
+Promise.resolve(1).then(2).then(Promise.resolve(3)).then(console.log)
 // 1
 
 // 题目3：
 Promise.resolve()
   .then(() => {
-    return new Error("error!!!");
+    return new Error('error!!!')
   })
   .then((res) => {
-    console.log("then: ", res);
+    console.log('then: ', res)
   })
   .catch((err) => {
-    console.log("catch: ", err);
-  });
+    console.log('catch: ', err)
+  })
 //   then:  Error: error!!!
 
 // 题目4：
 Promise.resolve()
   .then(() => {
-    throw new Error("error!!!");
+    throw new Error('error!!!')
   })
   .then((res) => {
-    console.log("then: ", res);
+    console.log('then: ', res)
   })
   .catch((err) => {
-    console.log("catch: ", err);
-  });
+    console.log('catch: ', err)
+  })
 //   catch:  Error: error!!!
 
 // 题目5：
 const promise2 = Promise.resolve().then(() => {
-  return promise2;
-});
-promise2.catch(console.error);
+  return promise2
+})
+promise2.catch(console.error)
 // TypeError: Chaining cycle detected for promise #<Promise>
 
 // 题目6：
 var pro = new Promise((res, rej) => {
-  res(1);
-});
+  res(1)
+})
 pro.then((res) => {
-  console.log(res);
-});
+  console.log(res)
+})
 setTimeout(() => {
-  console.log(2);
-});
+  console.log(2)
+})
 pro.then((res) => {
-  console.log(res);
-});
+  console.log(res)
+})
 //  1  1  2
 
 // 题目7：
 async function async1() {
-  console.log("async1 start");
-  await async2();
-  console.log("async1 end");
+  console.log('async1 start')
+  await async2()
+  console.log('async1 end')
 }
 
 async function async2() {
-  console.log("async2");
+  console.log('async2')
 }
 
-console.log("script start");
+console.log('script start')
 
 setTimeout(function () {
-  console.log("setTimeout");
-}, 0);
+  console.log('setTimeout')
+}, 0)
 
-async1();
+async1()
 
 new Promise(function (resolve) {
-  console.log("promise1");
-  resolve();
+  console.log('promise1')
+  resolve()
 }).then(function () {
-  console.log("promise2");
-});
+  console.log('promise2')
+})
 
-console.log("script end");
+console.log('script end')
 
 // script start
 // async1 start
@@ -110,56 +110,56 @@ console.log("script end");
 
 // 题目8：
 var p1 = new Promise(function (resolve, reject) {
-  foo.bar();
-  resolve(1);
-});
+  foo.bar()
+  resolve(1)
+})
 
 p1.then(
   function (value) {
-    console.log("p1 then value: " + value);
+    console.log('p1 then value: ' + value)
   },
   function (err) {
-    console.log("p1 then err: " + err);
+    console.log('p1 then err: ' + err)
   }
 ).then(
   function (value) {
-    console.log("p1 then then value: " + value);
+    console.log('p1 then then value: ' + value)
   },
   function (err) {
-    console.log("p1 then then err: " + err);
+    console.log('p1 then then err: ' + err)
   }
-);
+)
 
 var p2 = new Promise(function (resolve, reject) {
-  resolve(2);
-});
+  resolve(2)
+})
 
 p2.then(
   function (value) {
-    console.log("p2 then value: " + value);
-    foo.bar();
+    console.log('p2 then value: ' + value)
+    foo.bar()
   },
   function (err) {
-    console.log("p2 then err: " + err);
+    console.log('p2 then err: ' + err)
   }
 )
   .then(
     function (value) {
-      console.log("p2 then then value: " + value);
+      console.log('p2 then then value: ' + value)
     },
     function (err) {
-      console.log("p2 then then err: " + err);
-      return 1;
+      console.log('p2 then then err: ' + err)
+      return 1
     }
   )
   .then(
     function (value) {
-      console.log("p2 then then then value: " + value);
+      console.log('p2 then then then value: ' + value)
     },
     function (err) {
-      console.log("p2 then then then err: " + err);
+      console.log('p2 then then then err: ' + err)
     }
-  );
+  )
 
 //   p1 then err: ReferenceError: foo is not defined
 // p2 then value: 2
@@ -170,14 +170,14 @@ p2.then(
 // 题目9：
 Promise.resolve()
   .then(() => {
-    return new Error("error!!!");
+    return new Error('error!!!')
   })
   .then((res) => {
-    console.log("then: ", res);
+    console.log('then: ', res)
   })
   .catch((err) => {
-    console.log("catch: ", err);
-  });
+    console.log('catch: ', err)
+  })
 // then: Error: error!!!
 //   at Promise.resolve.then (...)
 //   at ...
@@ -190,62 +190,63 @@ Promise.resolve()
 //  代码运行出错
 
 // 题目10：
-var p1 = Promise.resolve(1);
-var p2 = Promise.resolve(p1);
+var p1 = Promise.resolve(1)
+var p2 = Promise.resolve(p1)
 var p3 = new Promise(function (resolve, reject) {
-  resolve(1);
-});
+  resolve(1)
+})
 var p4 = new Promise(function (resolve, reject) {
-  resolve(p1);
-});
+  resolve(p1)
+})
 
-console.log(p1 === p2);
-console.log(p1 === p3);
-console.log(p1 === p4);
-console.log(p3 === p4);
+console.log(p1 === p2)
+console.log(p1 === p3)
+console.log(p1 === p4)
+console.log(p3 === p4)
+// true false false false
 // Promise.resolve(...)可以接收一个值或者是一个Promise对象作为参数。
 // 当参数是普通值时，它返回一个resolved状态的Promise对象，对象的值就是这个参数；当参数是一个Promise对象时，它直接返回这个Promise参数。
 // 因此，p1 === p2。但通过new的方式创建的Promise对象都是一个新的对象，因此后面的三个比较结果都是false。
 
 // 题目11：
 var p1 = new Promise(function (resolve, reject) {
-  resolve(Promise.resolve("P1"));
-});
+  resolve(Promise.resolve('P1'))
+})
 
 var p2 = new Promise(function (resolve, reject) {
-  resolve(Promise.reject("P2"));
-});
+  resolve(Promise.reject('P2'))
+})
 
 var p3 = new Promise(function (resolve, reject) {
-  reject(Promise.resolve("P3"));
-});
+  reject(Promise.resolve('P3'))
+})
 
 p1.then(
   function fulfilled(value) {
-    console.log("p1fulfilled: " + value);
+    console.log('p1fulfilled: ' + value)
   },
   function rejected(err) {
-    console.log("p1rejected: " + err);
+    console.log('p1rejected: ' + err)
   }
-);
+)
 
 p2.then(
   function fulfilled(value) {
-    console.log("p2fulfilled: " + value);
+    console.log('p2fulfilled: ' + value)
   },
   function rejected(err) {
-    console.log("p2rejected: " + err);
+    console.log('p2rejected: ' + err)
   }
-);
+)
 
 p3.then(
   function fulfilled(value) {
-    console.log("p3fulfilled: " + value);
+    console.log('p3fulfilled: ' + value)
   },
   function rejected(err) {
-    console.log("p3rejected: " + err);
+    console.log('p3rejected: ' + err)
   }
-);
+)
 
 // p3rejected: [object Promise]
 // p1fulfilled: P1

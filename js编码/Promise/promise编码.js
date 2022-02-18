@@ -3,11 +3,11 @@
 // 题目要求，用户随机点击A和B多次，要求输入框显示结果时，按照用户点击的顺序显示，举例：
 // 用户点击了一次A，然后点击一次B，又点击一次A，输入框显示结果的顺序为先显示A异步请求结果，再次显示B的请求结果，最后再次显示A的请求结果。
 //dom元素
-var a = document.querySelector("#a");
-var b = document.querySelector("#b");
-var i = document.querySelector("#ipt");
+var a = document.querySelector('#a')
+var b = document.querySelector('#b')
+var i = document.querySelector('#ipt')
 //全局变量p保存promie实例
-var P = Promise.resolve();
+var P = Promise.resolve()
 a.onclick = function () {
   //将事件过程包装成一个promise并通过then链连接到
   //全局的Promise实例上，并更新全局变量，这样其他点击
@@ -16,24 +16,24 @@ a.onclick = function () {
     //then链里面的函数返回一个新的promise实例
     return new Promise(function (resolve, reject) {
       setTimeout(function () {
-        resolve();
-        console.log("a");
-        i.value = "a";
-      }, 1000);
-    });
-  });
-};
+        resolve()
+        console.log('a')
+        i.value = 'a'
+      }, 1000)
+    })
+  })
+}
 b.onclick = function () {
   P = P.then(function () {
     return new Promise(function (resolve, reject) {
       setTimeout(function () {
-        resolve();
-        console.log("b");
-        i.value = "b";
-      }, 2000);
-    });
-  });
-};
+        resolve()
+        console.log('b')
+        i.value = 'b'
+      }, 2000)
+    })
+  })
+}
 // 题目一说明：
 // 我们用定时器来模拟异步请求，仔细于阅读代码我们发现，在全局我们定义了一个全局P，P保存了一个promise的实例。
 // 然后再观察点击事件的代码，用户每次点击按钮时，我们在事件中访问全局Promise实例，将异步操作包装到成新的Promise实例，然后通过全局Promise实例的then方法来连接这些行为。
@@ -47,36 +47,36 @@ b.onclick = function () {
 const timeout = (ms) =>
   new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve();
-    }, ms);
-  });
+      resolve()
+    }, ms)
+  })
 
 const ajax1 = () =>
   timeout(2000).then(() => {
-    console.log("1");
-    return 1;
-  });
+    console.log('1')
+    return 1
+  })
 
 const ajax2 = () =>
   timeout(1000).then(() => {
-    console.log("2");
-    return 2;
-  });
+    console.log('2')
+    return 2
+  })
 
 const ajax3 = () =>
   timeout(2000).then(() => {
-    console.log("3");
-    return 3;
-  });
+    console.log('3')
+    return 3
+  })
 
 const mergePromise = (ajaxArray) => {
   // 在这里实现你的代码
-};
+}
 
 mergePromise([ajax1, ajax2, ajax3]).then((data) => {
-  console.log("done");
-  console.log(data); // data 为 [1, 2, 3]
-});
+  console.log('done')
+  console.log(data) // data 为 [1, 2, 3]
+})
 
 // 要求分别输出
 // 1
@@ -87,44 +87,23 @@ mergePromise([ajax1, ajax2, ajax3]).then((data) => {
 
 // 答案
 const mergePromise2 = (ajaxArray) => {
-  let P = Promise.resolve();
-  const result = [];
+  let P = Promise.resolve()
+  const result = []
   ajaxArray.forEach((item) => {
+    console.log(item)
     P = P.then(item).then(function (res) {
-      result.push(res);
-      return result;
-    });
-  });
+      result.push(res)
+      return result
+    })
+  })
   return P.then(() => {
-    return result;
-  });
-};
+    return result
+  })
+}
 // 要想异步按照顺序输出结果，唯一的办法就是等上一个异步执行结束之后，再执行下一个异步
 
 // 题目3----------------------题目3----------------------题目3----------------------题目3----------------------题目3----------
-// 实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject。
-// 缩进比如有如下请求fetchData
-function fetchData() {
-  return new Promise(function (resolve, reject) {
-    setTimeout(function () {
-      reject("response");
-    }, 1000);
-  });
-}
-// 实现的retry函数调用方式如下：
-retry(fetchData, 3);
 
-// 解答：
-function retry(promiseFunc, num = 2) {
-  return promiseFunc().then(null, (e) => {
-    if (num > 0) {
-      num -= 1;
-      console.log("重试");
-      return retry(promiseFunc, num);
-    }
-    return Promise.reject(e);
-  });
-}
 // 题目4----------------------题目4----------------------题目4----------------------题目4----------------------题目4----------
 // 题目5----------------------题目5----------------------题目5----------------------题目5----------------------题目5----------
 // 题目6----------------------题目6----------------------题目6----------------------题目6----------------------题目6----------
